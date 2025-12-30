@@ -11,7 +11,7 @@ const day1Notes = [
         id: '1',
         title: 'While Studying',
         content: `D. Which are my weak chapters?
-
+        
 Identify your weak areas first.
 Focus on understanding, not just memorizing.
 
@@ -277,8 +277,8 @@ export default function Home() {
     const [isHovering, setIsHovering] = useState(false);
 
     // Mouse positions for custom cursor
-    const mouseX = useMotionValue(0);
-    const mouseY = useMotionValue(0);
+    const mouseX = useMotionValue(-100);
+    const mouseY = useMotionValue(-100);
 
     // Smooth cursor movement
     const smoothMouseX = useSpring(mouseX, { stiffness: 250, damping: 20 });
@@ -380,7 +380,7 @@ export default function Home() {
             <motion.div style={{ position: 'fixed', inset: 0, opacity: day2Opacity, pointerEvents: 'none', zIndex: 0 }}>
                 <div style={{ position: 'absolute', bottom: '-10%', left: '50%', transform: 'translateX(-50%)', width: '80vw', height: '60vh', background: 'radial-gradient(circle, rgba(255,171,118,0.1) 0%, transparent 70%)', borderRadius: '50%' }} />
                 {/* Floating side bar - Right */}
-                <motion.div style={{ position: 'absolute', right: '30px', top: '50%', y: '-50%', width: '4px', height: '150px', background: 'rgba(255,171,118,0.1)', borderRadius: '2px', overflow: 'hidden' }}>
+                <motion.div style={{ position: 'absolute', right: 'clamp(10px, 3vw, 30px)', top: '50%', y: '-50%', width: '4px', height: '150px', background: 'rgba(255,171,118,0.1)', borderRadius: '2px', overflow: 'hidden' }}>
                     <motion.div style={{ width: '100%', height: day2ProgressHeight, background: '#FFAB76' }} />
                 </motion.div>
             </motion.div>
@@ -389,7 +389,7 @@ export default function Home() {
             <motion.div style={{ position: 'fixed', inset: 0, opacity: day3Opacity, pointerEvents: 'none', zIndex: 0 }}>
                 <div style={{ position: 'absolute', top: '20%', left: '10%', width: '30vw', height: '40vh', background: 'radial-gradient(circle, rgba(129,199,132,0.08) 0%, transparent 70%)' }} />
                 {/* Floating side bar - Left */}
-                <motion.div style={{ position: 'absolute', left: '30px', top: '50%', y: '-50%', width: '4px', height: '150px', background: 'rgba(129,199,132,0.1)', borderRadius: '2px', overflow: 'hidden' }}>
+                <motion.div style={{ position: 'absolute', left: 'clamp(10px, 3vw, 30px)', top: '50%', y: '-50%', width: '4px', height: '150px', background: 'rgba(129,199,132,0.1)', borderRadius: '2px', overflow: 'hidden' }}>
                     <motion.div style={{ width: '100%', height: day3ProgressHeight, background: '#81C784' }} />
                 </motion.div>
             </motion.div>
@@ -398,7 +398,7 @@ export default function Home() {
             <motion.div style={{ position: 'fixed', inset: 0, opacity: day4Opacity, pointerEvents: 'none', zIndex: 0 }}>
                 {/* Grid watermark */}
                 <div style={{ position: 'absolute', inset: 0, backgroundImage: 'linear-gradient(rgba(144,202,249,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(144,202,249,0.03) 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
-                <motion.div style={{ position: 'absolute', right: '10%', top: '20%', fontSize: '12vw', fontWeight: 900, color: 'rgba(144,202,249,0.05)', letterSpacing: '-5px' }}>04</motion.div>
+                <motion.div style={{ position: 'absolute', right: '10%', top: '20%', fontSize: 'min(12vw, 150px)', fontWeight: 900, color: 'rgba(144,202,249,0.05)', letterSpacing: '-2px' }}>04</motion.div>
             </motion.div>
 
             {/* Finale UI: Cinematic Team Credits (Mission Impossible Style) */}
@@ -428,26 +428,26 @@ export default function Home() {
                         const end = mid + 300;
 
                         // Randomized but deterministic offsets based on index
-                        const xOffset = (i % 2 === 0 ? 100 : -100) * (i % 3 + 1);
-                        const rotateOffset = (i % 2 === 0 ? 15 : -15) * (i % 2 + 0.5);
+                        const xOffset = (i % 2 === 0 ? 80 : -80) * (i % 3 + 1);
+                        const rotateOffset = (i % 2 === 0 ? 10 : -10) * (i % 2 + 0.5);
 
                         // Zoom through effect with Zig-Zag
-                        const scale = useTransform(scrollY, [start, mid, end], [0.5, 1.2, 4]);
+                        const scale = useTransform(scrollY, [start, mid, end], [0.6, 1.2, 3.5]);
                         const opacity = useTransform(scrollY, [start, start + 150, mid, end - 150, end], [0, 1, 1, 1, 0]);
-                        const blur = useTransform(scrollY, [start, mid, end], ["blur(15px)", "blur(0px)", "blur(30px)"]);
-                        const y = useTransform(scrollY, [start, end], [100, -100]);
-                        const x = useTransform(scrollY, [start, end], [xOffset * 0.5, xOffset * -1.5]);
-                        const rotate = useTransform(scrollY, [start, end], [rotateOffset, rotateOffset * -2]);
+                        const blur = useTransform(scrollY, [start, mid, end], ["blur(10px)", "blur(0px)", "blur(20px)"]);
+                        const y = useTransform(scrollY, [start, end], [80, -80]);
+                        const x = useTransform(scrollY, [start, end], [xOffset * 0.4, xOffset * -1.2]);
+                        const rotate = useTransform(scrollY, [start, end], [rotateOffset, rotateOffset * -1.5]);
 
                         return (
                             <motion.div
                                 key={name}
                                 style={{
                                     position: 'absolute',
-                                    fontSize: 'clamp(3rem, 15vw, 10rem)',
+                                    fontSize: 'clamp(2rem, 12vw, 8rem)',
                                     fontWeight: 900,
                                     color: '#fff',
-                                    letterSpacing: '-4px',
+                                    letterSpacing: 'clamp(-4px, -0.5vw, -2px)',
                                     textAlign: 'center',
                                     textTransform: 'uppercase',
                                     scale,
@@ -456,7 +456,8 @@ export default function Home() {
                                     y,
                                     x,
                                     rotate,
-                                    textShadow: '0 0 50px rgba(255,255,255,0.3)'
+                                    textShadow: '0 0 30px rgba(255,255,255,0.2)',
+                                    width: '90%'
                                 }}
                             >
                                 {name}
@@ -472,13 +473,15 @@ export default function Home() {
                             flexDirection: 'column',
                             alignItems: 'center',
                             opacity: useTransform(scrollY, [finaleStart + (teamMembers.length * 400) + 200, finaleStart + (teamMembers.length * 400) + 500], [0, 1]),
+                            width: '90%',
+                            textAlign: 'center'
                         }}
                     >
-                        <div style={{ width: '40px', height: '4px', background: '#fff', marginBottom: '24px' }} />
-                        <h2 style={{ fontSize: '1.2rem', fontWeight: 600, color: '#fff', textTransform: 'uppercase', letterSpacing: '12px' }}>
+                        <div style={{ width: 'clamp(20px, 5vw, 40px)', height: '4px', background: '#fff', marginBottom: '24px' }} />
+                        <h2 style={{ fontSize: 'clamp(1rem, 4vw, 1.4rem)', fontWeight: 600, color: '#fff', textTransform: 'uppercase', letterSpacing: 'clamp(4px, 1.5vw, 12px)' }}>
                             Grateful Gorillas
                         </h2>
-                        <span style={{ fontSize: '0.8rem', color: '#666', marginTop: '12px', fontWeight: 500, letterSpacing: '2px' }}>
+                        <span style={{ fontSize: 'clamp(0.6rem, 2vw, 0.8rem)', color: '#666', marginTop: '12px', fontWeight: 500, letterSpacing: '2px' }}>
                             MISSION COMPLETED • 2025
                         </span>
                     </motion.div>
@@ -487,16 +490,16 @@ export default function Home() {
 
             {/* Transition Overlays */}
             <motion.div style={{ position: 'fixed', inset: 0, background: '#000', opacity: transitionOverlay1To2, zIndex: 100, display: 'flex', alignItems: 'center', justifyContent: 'center', pointerEvents: 'none' }}>
-                <span style={{ color: '#fff', fontSize: '2rem', fontWeight: 700 }}>Day 2</span>
+                <span style={{ color: '#fff', fontSize: 'var(--fluid-h2)', fontWeight: 700 }}>Day 2</span>
             </motion.div>
             <motion.div style={{ position: 'fixed', inset: 0, background: '#000', opacity: transitionOverlay2To3, zIndex: 100, display: 'flex', alignItems: 'center', justifyContent: 'center', pointerEvents: 'none' }}>
-                <span style={{ color: '#fff', fontSize: '2rem', fontWeight: 700 }}>Day 3</span>
+                <span style={{ color: '#fff', fontSize: 'var(--fluid-h2)', fontWeight: 700 }}>Day 3</span>
             </motion.div>
             <motion.div style={{ position: 'fixed', inset: 0, background: '#000', opacity: transitionOverlay3To4, zIndex: 100, display: 'flex', alignItems: 'center', justifyContent: 'center', pointerEvents: 'none' }}>
-                <span style={{ color: '#fff', fontSize: '2rem', fontWeight: 700 }}>Day 4</span>
+                <span style={{ color: '#fff', fontSize: 'var(--fluid-h2)', fontWeight: 700 }}>Day 4</span>
             </motion.div>
             <motion.div style={{ position: 'fixed', inset: 0, background: '#000', opacity: transitionOverlayFinale, zIndex: 100, display: 'flex', alignItems: 'center', justifyContent: 'center', pointerEvents: 'none' }}>
-                <span style={{ color: '#fff', fontSize: '2rem', fontWeight: 700 }}>The Team</span>
+                <span style={{ color: '#fff', fontSize: 'var(--fluid-h2)', fontWeight: 700 }}>The Team</span>
             </motion.div>
 
             {/* Header */}
@@ -505,10 +508,11 @@ export default function Home() {
                 animate={{ y: 0 }}
                 transition={{ type: 'spring', stiffness: 100, damping: 20 }}
                 style={{
-                    position: 'fixed', top: 0, left: 0, right: 0, padding: '24px 40px', zIndex: 90,
+                    position: 'fixed', top: 0, left: 0, right: 0, padding: 'clamp(16px, 4vw, 24px) clamp(20px, 5vw, 40px)', zIndex: 90,
                     display: 'flex', justifyContent: 'space-between', alignItems: 'center',
                     background: 'linear-gradient(180deg, rgba(10,10,10,0.8) 0%, transparent 100%)',
-                    backdropFilter: 'blur(10px)'
+                    backdropFilter: 'blur(10px)',
+                    paddingTop: 'calc(clamp(16px, 4vw, 24px) + var(--safe-area-top))'
                 }}
             >
                 <motion.div
@@ -519,26 +523,26 @@ export default function Home() {
                 >
                     <motion.div
                         whileHover={{ rotate: 180 }}
-                        style={{ width: '32px', height: '32px', background: '#f8f8f8', borderRadius: '6px' }}
+                        style={{ width: 'clamp(24px, 4vw, 32px)', height: 'clamp(24px, 4vw, 32px)', background: '#f8f8f8', borderRadius: '6px' }}
                     />
-                    <span style={{ fontSize: '1.25rem', fontWeight: 600, color: '#f0f0f0' }}>Grateful Gorillas</span>
+                    <span style={{ fontSize: 'clamp(1rem, 3vw, 1.25rem)', fontWeight: 600, color: '#f0f0f0' }}>Grateful Gorillas</span>
                 </motion.div>
-                <span style={{ fontSize: '0.875rem', color: '#888' }}>{allNotes.length} Missions Stacked</span>
+                <span style={{ fontSize: 'clamp(0.65rem, 2vw, 0.875rem)', color: '#888', textAlign: 'right' }}>{allNotes.length} Missions Stacked</span>
             </motion.header>
 
             {/* Intro Section */}
-            <section style={{ height: '100vh', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', textAlign: 'center' }}>
+            <section style={{ height: '100vh', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', textAlign: 'center', padding: '0 10vw' }}>
                 <motion.h1
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.8 }}
-                    style={{ fontSize: 'clamp(3rem, 10vw, 5rem)', fontWeight: 800, color: '#f0f0f0', letterSpacing: '-3px' }}
+                    style={{ fontSize: 'var(--fluid-h1)', fontWeight: 800, color: '#f0f0f0', letterSpacing: '-3px', lineHeight: 0.9 }}
                 >
                     Progressive
                     <br />
                     <span style={{ color: '#444' }}>Mindset.</span>
                 </motion.h1>
-                <div style={{ width: '1px', height: '100px', background: 'linear-gradient(180deg, #666, transparent)', marginTop: '40px' }} />
+                <div style={{ width: '1px', height: 'clamp(60px, 15vh, 100px)', background: 'linear-gradient(180deg, #666, transparent)', marginTop: '40px' }} />
             </section>
 
             {/* Notes Stack */}

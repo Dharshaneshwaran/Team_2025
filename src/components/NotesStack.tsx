@@ -46,12 +46,12 @@ const PeelingNote = memo(function PeelingNote({
         [0, 1]
     );
 
-    // Animation values tied to scroll
-    const rotateX = useTransform(progress, [0, 1], [0, -50]);
-    const rotateY = useTransform(progress, [0, 1], [0, 30]);
-    const translateX = useTransform(progress, [0, 1], [0, 150]);
-    const translateY = useTransform(progress, [0, 1], [0, -200]);
-    const scale = useTransform(progress, [0, 1], [1, 0.75]);
+    // Animation values tied to scroll - Adjusted for mobile legibility
+    const rotateX = useTransform(progress, [0, 1], [0, -45]);
+    const rotateY = useTransform(progress, [0, 1], [0, 25]);
+    const translateX = useTransform(progress, [0, 1], [0, 120]);
+    const translateY = useTransform(progress, [0, 1], [0, -150]);
+    const scale = useTransform(progress, [0, 1], [1, 0.8]);
     const opacity = useTransform(progress, [0, 0.7, 1], [1, 0.9, 0]);
 
     const zIndex = totalNotes - index;
@@ -77,11 +77,9 @@ const PeelingNote = memo(function PeelingNote({
             }}
         >
             <div
+                className="note-card"
                 style={{
                     background: `linear-gradient(145deg, ${noteColor} 0%, ${noteColor}ee 100%)`,
-                    borderRadius: '8px',
-                    padding: '28px',
-                    minHeight: '280px',
                     position: 'relative',
                     boxShadow: '0 20px 60px rgba(0, 0, 0, 0.4), 0 8px 20px rgba(0, 0, 0, 0.25)',
                 }}
@@ -92,8 +90,8 @@ const PeelingNote = memo(function PeelingNote({
                         position: 'absolute',
                         bottom: 0,
                         right: 0,
-                        width: '40px',
-                        height: '40px',
+                        width: 'clamp(30px, 8vw, 40px)',
+                        height: 'clamp(30px, 8vw, 40px)',
                         background: `linear-gradient(315deg, #0a0a0a 0%, #0a0a0a 50%, ${noteColor}99 50%, ${noteColor} 100%)`,
                         borderRadius: '0 0 8px 0',
                     }}
@@ -112,33 +110,13 @@ const PeelingNote = memo(function PeelingNote({
                     }}
                 />
 
-                <h2
-                    style={{
-                        fontSize: '1.3rem',
-                        fontWeight: 600,
-                        color: '#1a1a1a',
-                        marginBottom: '14px',
-                        lineHeight: 1.3,
-                    }}
-                >
-                    {note.title}
-                </h2>
-                <p
-                    style={{
-                        fontSize: '0.9rem',
-                        fontWeight: 400,
-                        color: '#4a4a4a',
-                        lineHeight: 1.7,
-                        whiteSpace: 'pre-line',
-                    }}
-                >
-                    {note.content}
-                </p>
+                <h2 className="note-title">{note.title}</h2>
+                <p className="note-content">{note.content}</p>
                 <span
                     style={{
                         position: 'absolute',
-                        bottom: '16px',
-                        left: '28px',
+                        bottom: 'clamp(12px, 3vw, 16px)',
+                        left: 'clamp(20px, 5vw, 28px)',
                         fontSize: '0.7rem',
                         fontWeight: 500,
                         color: '#888',
@@ -171,6 +149,7 @@ export default function NotesStack({ notes }: NotesStackProps) {
             style={{
                 minHeight: `${notes.length * 350}px`,
                 position: 'relative',
+                padding: '0 10vw',
             }}
         >
             <div
@@ -181,7 +160,6 @@ export default function NotesStack({ notes }: NotesStackProps) {
                     display: 'flex',
                     justifyContent: 'center',
                     alignItems: 'center',
-                    padding: '0 20px',
                 }}
             >
                 <div
@@ -189,7 +167,9 @@ export default function NotesStack({ notes }: NotesStackProps) {
                         position: 'relative',
                         width: '100%',
                         maxWidth: '480px',
-                        height: '380px',
+                        // Maintain aspect ratio while being responsive
+                        aspectRatio: '1 / 0.8',
+                        maxHeight: '70vh',
                     }}
                 >
                     {notes.map((note, index) => (
@@ -202,7 +182,6 @@ export default function NotesStack({ notes }: NotesStackProps) {
                             scrollStart={scrollPositions[index]}
                         />
                     ))}
-
                 </div>
             </div>
         </div>
