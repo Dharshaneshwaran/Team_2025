@@ -73,7 +73,7 @@ const PeelingNote = memo(function PeelingNote({
             <div
                 className="note-card"
                 style={{
-                    background: `linear-gradient(145deg, ${noteColor} 0%, ${noteColor}ee 100%)`,
+                    background: `linear-gradient(145deg, ${noteColor} 0%, ${noteColor} 100%)`,
                     position: 'relative',
                     boxShadow: '0 20px 60px rgba(0, 0, 0, 0.4), 0 8px 20px rgba(0, 0, 0, 0.25)',
                 }}
