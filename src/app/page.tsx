@@ -293,15 +293,28 @@ export default function Home() {
         return () => window.removeEventListener('mousemove', handleMouseMove);
     }, [mouseX, mouseY]);
 
-    // Calculate note positions
-    const day1End = day1Notes.length * 300;
-    const day2Start = day1End + 500;
-    const day2End = day2Start + day2Notes.length * 300;
-    const day3Start = day2End + 500;
-    const day3End = day3Start + day3Notes.length * 300;
-    const day4Start = day3End + 500;
-    const day4End = day4Start + day4Notes.length * 300;
-    const finaleStart = day4End + 500;
+    // Calculate note positions based on viewport to stay responsive
+    const [viewportHeight, setViewportHeight] = useState(800);
+    const [isTouchDevice, setIsTouchDevice] = useState(false);
+
+    useEffect(() => {
+        setViewportHeight(window.innerHeight);
+        setIsTouchDevice('ontouchstart' in window || navigator.maxTouchPoints > 0);
+
+        const handleResize = () => setViewportHeight(window.innerHeight);
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
+    const scrollUnit = Math.max(viewportHeight * 0.4, 250); // Dynamic step
+    const day1End = day1Notes.length * scrollUnit;
+    const day2Start = day1End + scrollUnit * 1.5;
+    const day2End = day2Start + day2Notes.length * scrollUnit;
+    const day3Start = day2End + scrollUnit * 1.5;
+    const day3End = day3Start + day3Notes.length * scrollUnit;
+    const day4Start = day3End + scrollUnit * 1.5;
+    const day4End = day4Start + day4Notes.length * scrollUnit;
+    const finaleStart = day4End + scrollUnit * 1.5;
 
     // Day-specific Opacities
     const day1Opacity = useTransform(scrollY, [0, day1End, day2Start], [1, 1, 0]);
@@ -336,16 +349,18 @@ export default function Home() {
             {/* Final Touch: Film Grain Overlay */}
             <div className="film-grain" />
 
-            {/* Final Touch: Custom Cursor Follower */}
-            <motion.div
-                className={`cursor-follower ${isHovering ? 'active' : ''}`}
-                style={{
-                    left: smoothMouseX,
-                    top: smoothMouseY,
-                    translateX: '-50%',
-                    translateY: '-50%',
-                }}
-            />
+            {/* Final Touch: Custom Cursor Follower - Hide on touch */}
+            {!isTouchDevice && (
+                <motion.div
+                    className={`cursor-follower ${isHovering ? 'active' : ''}`}
+                    style={{
+                        left: smoothMouseX,
+                        top: smoothMouseY,
+                        translateX: '-50%',
+                        translateY: '-50%',
+                    }}
+                />
+            )}
 
             {/* Final Touch: Top Progress Bar */}
             <motion.div

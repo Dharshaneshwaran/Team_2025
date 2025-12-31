@@ -1,7 +1,7 @@
 'use client';
 
 import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
-import { useRef, useMemo, memo } from 'react';
+import { useRef, useMemo, memo, useState, useEffect } from 'react';
 
 interface Note {
     id: string;
@@ -37,22 +37,16 @@ const PeelingNote = memo(function PeelingNote({
 }) {
     const { scrollY } = useScroll();
 
-    const scrollEnd = scrollStart + 300;
-
-    // Simple transform without spring for better performance
-    const progress = useTransform(
-        scrollY,
-        [scrollStart, scrollEnd],
-        [0, 1]
-    );
+    const scrollEnd = scrollStart + Math.max(300, 300); // We can make this dynamic if needed
+    const progress = useTransform(scrollY, [scrollStart, scrollEnd], [0, 1]);
 
     // Animation values tied to scroll - Adjusted for mobile legibility
-    const rotateX = useTransform(progress, [0, 1], [0, -45]);
-    const rotateY = useTransform(progress, [0, 1], [0, 25]);
-    const translateX = useTransform(progress, [0, 1], [0, 120]);
-    const translateY = useTransform(progress, [0, 1], [0, -150]);
-    const scale = useTransform(progress, [0, 1], [1, 0.8]);
-    const opacity = useTransform(progress, [0, 0.7, 1], [1, 0.9, 0]);
+    const rotateX = useTransform(scrollY, [scrollStart, scrollEnd], [0, -45]);
+    const rotateY = useTransform(scrollY, [scrollStart, scrollEnd], [0, 25]);
+    const translateX = useTransform(scrollY, [scrollStart, scrollEnd], [0, 60]); // Reduced for mobile
+    const translateY = useTransform(scrollY, [scrollStart, scrollEnd], [0, -100]); // Reduced for mobile
+    const scale = useTransform(scrollY, [scrollStart, scrollEnd], [1, 0.85]);
+    const opacity = useTransform(scrollY, [scrollStart, scrollEnd - 50, scrollEnd], [1, 1, 0]);
 
     const zIndex = totalNotes - index;
     const rotations = [-2, 1.5, -1, 2, -0.5, 1.2, -1.5, 2.2];
@@ -133,23 +127,32 @@ const PeelingNote = memo(function PeelingNote({
 
 export default function NotesStack({ notes }: NotesStackProps) {
     const containerRef = useRef<HTMLDivElement>(null);
+    const [viewportHeight, setViewportHeight] = useState(800);
+
+    useEffect(() => {
+        setViewportHeight(window.innerHeight);
+        const handleResize = () => setViewportHeight(window.innerHeight);
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
 
     const noteColorMap = useMemo(() => {
         return notes.map((note, index) => note.color || noteColors[index % noteColors.length]);
     }, [notes]);
 
-    // Pre-calculate scroll positions
+    // Pre-calculate scroll positions based on viewport height
+    const scrollUnit = Math.max(viewportHeight * 0.4, 250);
     const scrollPositions = useMemo(() => {
-        return notes.map((_, index) => index * 300);
-    }, [notes]);
+        return notes.map((_, index) => index * scrollUnit);
+    }, [notes, scrollUnit]);
 
     return (
         <div
             ref={containerRef}
             style={{
-                minHeight: `${notes.length * 350}px`,
+                minHeight: `${notes.length * scrollUnit + 500}px`,
                 position: 'relative',
-                padding: '0 10vw',
+                padding: '0 var(--section-padding)',
             }}
         >
             <div
@@ -168,8 +171,8 @@ export default function NotesStack({ notes }: NotesStackProps) {
                         width: '100%',
                         maxWidth: '480px',
                         // Maintain aspect ratio while being responsive
-                        aspectRatio: '1 / 0.8',
-                        maxHeight: '70vh',
+                        aspectRatio: '1 / 1.1',
+                        maxHeight: '75vh',
                     }}
                 >
                     {notes.map((note, index) => (

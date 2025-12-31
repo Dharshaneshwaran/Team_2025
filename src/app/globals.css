@@ -31,8 +31,11 @@
   /* Responsive Constants */
   --safe-area-top: env(safe-area-inset-top, 0px);
   --safe-area-bottom: env(safe-area-inset-bottom, 0px);
-  --fluid-h1: clamp(2.5rem, 8vw, 5rem);
-  --fluid-h2: clamp(1.2rem, 4vw, 2.5rem);
+  --fluid-h1: clamp(2.2rem, 10vw, 5rem);
+  --fluid-h2: clamp(1.1rem, 5vw, 2.5rem);
+  --section-padding: clamp(1rem, 5vw, 4rem);
+  --note-padding: clamp(1.25rem, 4vw, 2.5rem);
+  --container-width: 100%;
 }
 
 * {
@@ -133,8 +136,8 @@ body {
   position: relative;
   background: linear-gradient(135deg, var(--note-primary) 0%, var(--note-secondary) 100%);
   border-radius: 4px;
-  padding: clamp(20px, 5vw, 40px);
-  min-height: clamp(240px, 40vh, 320px);
+  padding: var(--note-padding);
+  min-height: clamp(220px, 45vh, 320px);
   box-shadow: var(--shadow-lg);
   transform-origin: bottom right;
   transition: transform var(--transition-peel), box-shadow var(--transition-normal);
