@@ -446,23 +446,23 @@ export default function Home() {
                         const xOffset = (i % 2 === 0 ? 80 : -80) * (i % 3 + 1);
                         const rotateOffset = (i % 2 === 0 ? 10 : -10) * (i % 2 + 0.5);
 
-                        // Zoom through effect with Zig-Zag
-                        const scale = useTransform(scrollY, [start, mid, end], [0.6, 1.2, 3.5]);
+                        // Zoom through effect with Zig-Zag - Optimized for clarity
+                        const scale = useTransform(scrollY, [start, mid, end], [0.8, 1.1, 2.5]);
                         const opacity = useTransform(scrollY, [start, start + 150, mid, end - 150, end], [0, 1, 1, 1, 0]);
-                        const blur = useTransform(scrollY, [start, mid, end], ["blur(10px)", "blur(0px)", "blur(20px)"]);
-                        const y = useTransform(scrollY, [start, end], [80, -80]);
-                        const x = useTransform(scrollY, [start, end], [xOffset * 0.4, xOffset * -1.2]);
-                        const rotate = useTransform(scrollY, [start, end], [rotateOffset, rotateOffset * -1.5]);
+                        const blur = useTransform(scrollY, [start, mid, end], ["blur(2px)", "blur(0px)", "blur(6px)"]);
+                        const y = useTransform(scrollY, [start, end], [60, -60]);
+                        const x = useTransform(scrollY, [start, end], [xOffset * 0.3, xOffset * -0.8]);
+                        const rotate = useTransform(scrollY, [start, end], [rotateOffset * 0.5, rotateOffset * -0.8]);
 
                         return (
                             <motion.div
                                 key={name}
                                 style={{
                                     position: 'absolute',
-                                    fontSize: 'clamp(2rem, 12vw, 8rem)',
+                                    fontSize: 'clamp(1.5rem, 10vw, 6rem)',
                                     fontWeight: 900,
                                     color: '#fff',
-                                    letterSpacing: 'clamp(-4px, -0.5vw, -2px)',
+                                    letterSpacing: 'clamp(-2px, -0.3vw, -1px)',
                                     textAlign: 'center',
                                     textTransform: 'uppercase',
                                     scale,
@@ -471,7 +471,7 @@ export default function Home() {
                                     y,
                                     x,
                                     rotate,
-                                    textShadow: '0 0 30px rgba(255,255,255,0.2)',
+                                    textShadow: '0 0 15px rgba(255,255,255,0.15)',
                                     width: '90%'
                                 }}
                             >
